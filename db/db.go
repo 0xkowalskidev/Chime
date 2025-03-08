@@ -34,10 +34,6 @@ func InitDB(path string) (*DB, error) {
 	return db, nil
 }
 
-func (db *DB) Close() error {
-	return db.DB.Close()
-}
-
 // Helpers
 func scanRows[T any](rows *sql.Rows, scanFunc func(*T) error) ([]T, error) {
 	defer rows.Close()

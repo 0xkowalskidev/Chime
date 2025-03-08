@@ -14,7 +14,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
+	defer db.DB.Close()
 
 	// Setup Fiber
 	engine := html.New("./", ".html")
@@ -34,7 +34,7 @@ func main() {
 			panic(err)
 		}
 
-		return c.Render("index", fiber.Map{"Chatrooms": chatrooms, "Messages": messages})
+		return c.Render("index", fiber.Map{"CurrentChatroom": chatrooms[0].Name, "Chatrooms": chatrooms, "Messages": messages})
 	})
 
 	log.Fatal(app.Listen(":3000"))
