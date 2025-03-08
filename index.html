@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <title>Main</title>
+        <script src="/htmx.js"></script>
+        <link rel="stylesheet" href="/pico.orange.css">
+</head>
+
+<body style="height: 100vh;">
+        <main style="display: flex; height:100%;">
+                <!-- Channel Sidebar -->
+                <aside style="flex: 0 0 20%; padding: 0 10px;">
+                        <nav>
+                                <ul>
+                                        <li><strong>#General Chat</strong></li>
+                                        <li>#Second Chat</li>
+
+                                        <hr />
+
+                                        <li>Voice 1</li>
+                                </ul>
+                        </nav>
+                </aside>
+
+                <!-- Chat Area -->
+                <section style="flex:1; display: flex; flex-direction:column; height:100%; padding:10px;">
+                        <header><strong>General Chat</strong></header>
+
+                        <hr />
+
+                        <div style="flex:1; overflow-y: auto;">
+                                <article><strong>User 1:</strong> hello</article>
+                                <article><strong>User 2:</strong> Hello there</article>
+                        </div>
+
+                        <footer>
+                                <form role="search">
+                                        <input placeholder="Send a message..." />
+                                        <input type="submit" value="Send" />
+                                </form>
+                        </footer>
+                </section>
+        </main>
+</body>
+
+</html>
