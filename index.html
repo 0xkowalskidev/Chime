@@ -13,8 +13,9 @@
                 <aside style="flex: 0 0 20%; padding: 0 10px;">
                         <nav>
                                 <ul>
-                                        <li><strong>#General Chat</strong></li>
-                                        <li>#Second Chat</li>
+                                        {{ range .Chatrooms}}
+                                        <li><strong>#{{.Name}}</strong></li>
+                                        {{end}}
 
                                         <hr />
 
@@ -30,8 +31,9 @@
                         <hr />
 
                         <div style="flex:1; overflow-y: auto;">
-                                <article><strong>User 1:</strong> hello</article>
-                                <article><strong>User 2:</strong> Hello there</article>
+                                {{ range .Messages }}
+                                <article><strong>{{.Username}}:</strong> {{.Content}}</article>
+                                {{end}}
                         </div>
 
                         <footer>
