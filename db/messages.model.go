@@ -16,16 +16,12 @@ func (d *DB) initMessagesModel() error {
             content TEXT NOT NULL,
             FOREIGN KEY (chatroom_id) REFERENCES chatrooms(id)
         );
-        INSERT OR IGNORE INTO messages (chatroom_id, username, content)
-        VALUES ((SELECT id FROM chatrooms WHERE name = 'General Chat'), 'User1', 'Hello everyone!');
-        INSERT OR IGNORE INTO messages (chatroom_id, username, content)
-        VALUES ((SELECT id FROM chatrooms WHERE name = 'General Chat'), 'User2', 'Hi there!');
     `)
 	return err
 }
 
-func (d *DB) GetMessages(chatroomID int) ([]Message, error) {
-	rows, err := d.Query(`
+func (db *DB) GetMessages(chatroomID int) ([]Message, error) {
+	rows, err := db.Query(`
         SELECT id, chatroom_id, username, content 
         FROM messages 
         WHERE chatroom_id = ?
@@ -36,4 +32,25 @@ func (d *DB) GetMessages(chatroomID int) ([]Message, error) {
 	return scanRows(rows, func(msg *Message) error {
 		return rows.Scan(&msg.ID, &msg.ChatroomID, &msg.Username, &msg.Content)
 	})
+}
+
+func (db *DB) CreateMessage(chatroomID int, username, content string) (Message, error) {
+	result, err := db.Exec(`
+        INSERT INTO messages (chatroom_id, username, content) VALUES (?, ?, ?)
+    `, chatroomID, username, content)
+	if err != nil {
+		return Message{}, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return Message{}, err
+	}
+
+	return Message{
+		ID:         int(id),
+		ChatroomID: chatroomID,
+		Username:   username,
+		Content:    content,
+	}, nil
 }

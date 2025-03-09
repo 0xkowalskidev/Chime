@@ -4,6 +4,7 @@
 <head>
         <title>Chime</title>
         <script src="/htmx.js"></script>
+        <script src="/htmx-ext-ws.js"></script>
         <link rel="stylesheet" href="/pico.orange.css">
 </head>
 
@@ -25,20 +26,21 @@
                 </aside>
 
                 <!-- Chat Area -->
-                <section style="flex:1; display: flex; flex-direction:column; height:100%; padding:10px;">
+                <section style="flex:1; display: flex; flex-direction:column; height:100%; padding:10px;" hx-ext="ws"
+                        ws-connect="/ws/{{.CurrentChatroomID}}">
                         <header><strong>{{.CurrentChatroom}}</strong></header>
 
                         <hr />
 
-                        <div style="flex:1; overflow-y: auto;">
+                        <div id="chat-messages" style="flex:1; overflow-y: auto;">
                                 {{ range .Messages }}
-                                <article><strong>{{.Username}}:</strong> {{.Content}}</article>
+                                {{ template "message" . }}
                                 {{end}}
                         </div>
 
                         <footer>
-                                <form role="search">
-                                        <input placeholder="Send a message..." />
+                                <form ws-send role="search">
+                                        <input name="content" placeholder="Send a message..." />
                                         <input type="submit" value="Send" />
                                 </form>
                         </footer>
@@ -47,3 +49,13 @@
 </body>
 
 </html>
+
+
+{{define "chatroom"}}
+
+{{end}}
+
+
+{{define "message"}}
+<article><strong>{{.Username}}:</strong> {{.Content}}</article>
+{{end}}
